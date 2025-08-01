@@ -30,37 +30,38 @@ public class ChatScreenMixin {
     )
     private void movementToggle(int keyCode, int scanCode, int modifiers, CallbackInfoReturnable<Boolean> cir) {
         MinecraftClient client = ((ScreenGetMinecraftClient) this).getMinecraftClient();
-
-        if (keyCode == GLFW.GLFW_KEY_TAB) {
-            ChatInputSuggestor.SuggestionWindow window = ((ChatInputSuggestorGetWindow) this.chatInputSuggestor).getWindow();
-            if (window != null) {
-                MIC.setEnabled(false);
-                window.complete();
-                client.mouse.unlockCursor();
-                this.chatField.setFocused(true);
-                this.chatField.setEditable(true);
-                cir.setReturnValue(true);
-                return;
+        if (MIC.enabled()) {
+            if (keyCode == GLFW.GLFW_KEY_TAB) {
+                ChatInputSuggestor.SuggestionWindow window = ((ChatInputSuggestorGetWindow) this.chatInputSuggestor).getWindow();
+                if (window != null) {
+                    MIC.setEnabled(false);
+                    window.complete();
+                    client.mouse.unlockCursor();
+                    this.chatField.setFocused(true);
+                    this.chatField.setEditable(true);
+                    cir.setReturnValue(true);
+                    return;
+                }
             }
-        }
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-            MIC.setEnabled(false);
-            client.setScreen(null);
-            cir.setReturnValue(true);
-        }
-        if (keyCode == ((KeyBindingGetBoundKey) MIC.commandMovementKey).getBoundKey().getCode()) {
-            if (MIC.enabled()) {
+            if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
                 MIC.setEnabled(false);
-                client.mouse.unlockCursor();
-                this.chatField.setFocused(true);
-                this.chatField.setEditable(true);
+                client.setScreen(null);
                 cir.setReturnValue(true);
-            } else {
-                MIC.setEnabled(true);
-                client.mouse.lockCursor();
-                this.chatField.setFocused(false);
-                this.chatField.setEditable(false);
-                cir.setReturnValue(true);
+            }
+            if (keyCode == ((KeyBindingGetBoundKey) MIC.commandMovementKey).getBoundKey().getCode()) {
+                if (MIC.enabled()) {
+                    MIC.setEnabled(false);
+                    client.mouse.unlockCursor();
+                    this.chatField.setFocused(true);
+                    this.chatField.setEditable(true);
+                    cir.setReturnValue(true);
+                } else {
+                    MIC.setEnabled(true);
+                    client.mouse.lockCursor();
+                    this.chatField.setFocused(false);
+                    this.chatField.setEditable(false);
+                    cir.setReturnValue(true);
+                }
             }
         }
     }
