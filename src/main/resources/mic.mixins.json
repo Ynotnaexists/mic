@@ -1,21 +1,22 @@
 {
-	"required": true,
-	"package": "ynotnaexists.mic.mixin",
-	"compatibilityLevel": "JAVA_21",
-	"client": [
-		"ChatInputSuggestorMixin",
-		"ChatScreenMixin",
-		"MouseMixin",
-		"accessors.ChatScreenGetInputSuggestor",
-		"accessors.ChatInputSuggestorGetWindow",
-		"accessors.KeyBindingGetBoundKey",
-		"accessors.ScreenGetMinecraftClient",
-		"accessors.SuggestionWindowGetSelection"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"overwrites": {
-		"requireAnnotations": true
+  "required": true,
+  "package": "ynotnaexists.mic.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ChatInputSuggestorMixin",
+    "ChatScreenMixin",
+    "MouseMixin",
+    "TextFieldMixin",
+    "accessors.ChatInputSuggestorGetWindow",
+    "accessors.ChatScreenGetInputSuggestor",
+    "accessors.KeyBindingGetBoundKey",
+    "accessors.ScreenGetMinecraftClient",
+    "accessors.SuggestionWindowGetSelection"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
 	}
 }

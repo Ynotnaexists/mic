@@ -35,7 +35,7 @@ public class MouseMixin {
             this.cursorLocked = true;
             this.x = this.client.getWindow().getWidth() / 2;
             this.y = this.client.getWindow().getHeight() / 2;
-            InputUtil.setCursorParameters(this.client.getWindow().getHandle(), InputUtil.GLFW_CURSOR_DISABLED, this.x, this.y);
+            InputUtil.setCursorParameters(this.client.getWindow(), InputUtil.GLFW_CURSOR_DISABLED, this.x, this.y);
             ci.cancel();
         }
     }
