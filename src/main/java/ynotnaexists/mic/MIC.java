@@ -35,7 +35,7 @@ public class MIC implements ClientModInitializer {
 
     public static final KeyBinding commandMovementKey = new KeyBinding(
         "key.walkingincommand.toggle_command_movement",
-        GLFW.GLFW_KEY_F4,
+        GLFW.GLFW_KEY_LEFT_CONTROL,
         KeyBinding.Category.MOVEMENT
     );
 }
