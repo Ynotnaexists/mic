@@ -1,4 +1,4 @@
-package ynotnaexists.mic.mixin;
+package ynotnaexists.moveandchat.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ynotnaexists.mic.MIC;
+import ynotnaexists.moveandchat.MoveAndChat;
 
 @Environment(EnvType.CLIENT)
 @Mixin(Mouse.class)
@@ -31,10 +31,10 @@ public class MouseMixin {
         cancellable = true
     )
     private void addWalkingInCommandSupport(CallbackInfo ci) {
-        if (MIC.enabled()) {
+        if (MoveAndChat.enabled()) {
             this.cursorLocked = true;
-            this.x = this.client.getWindow().getWidth() / 2;
-            this.y = this.client.getWindow().getHeight() / 2;
+            this.x = (double) this.client.getWindow().getWidth() / 2;
+            this.y = (double) this.client.getWindow().getHeight() / 2;
             InputUtil.setCursorParameters(this.client.getWindow(), InputUtil.GLFW_CURSOR_DISABLED, this.x, this.y);
             ci.cancel();
         }

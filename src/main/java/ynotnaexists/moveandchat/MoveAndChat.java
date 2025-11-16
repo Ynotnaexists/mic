@@ -1,16 +1,17 @@
-package ynotnaexists.mic;
+package ynotnaexists.moveandchat;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.option.KeyBinding;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ynotnaexists.mic.mixin.accessors.ChatScreenGetInputSuggestor;
+import ynotnaexists.moveandchat.mixin.accessors.ChatScreenGetInputSuggestor;
 
-public class MIC implements ClientModInitializer {
-    public static final String MOD_ID = "mic";
+public class MoveAndChat implements ClientModInitializer {
+    public static final String MOD_ID = "moveandchat";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     private static boolean commandMovementEnabled;
@@ -19,7 +20,8 @@ public class MIC implements ClientModInitializer {
     public void onInitializeClient() {
         KeyBindingHelper.registerKeyBinding(commandMovementKey);
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if (!MIC.enabled() || client.currentScreen == null) return;
+            if (client.player != null && client.player.isDead()) setEnabled(false);
+            if (!MoveAndChat.enabled() || !(client.currentScreen instanceof ChatScreen)) return;
             KeyBinding.updatePressedStates();
             ((ChatScreenGetInputSuggestor) client.currentScreen).getChatInputSuggestor().refresh();
         });

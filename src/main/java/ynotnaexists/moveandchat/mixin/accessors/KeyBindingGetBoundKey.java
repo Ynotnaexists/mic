@@ -1,4 +1,4 @@
-package ynotnaexists.mic.mixin.accessors;
+package ynotnaexists.moveandchat.mixin.accessors;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

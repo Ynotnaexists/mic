@@ -1,4 +1,4 @@
-package ynotnaexists.mic.mixin.accessors;
+package ynotnaexists.moveandchat.mixin.accessors;
 
 import net.minecraft.client.gui.screen.ChatInputSuggestor;
 import org.spongepowered.asm.mixin.Mixin;

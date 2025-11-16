@@ -2,10 +2,10 @@
 	"schemaVersion": 1,
 	"id": "mic",
 	"version": "1.0",
-	"name": "MIC",
+	"name": "Move & Chat",
 	"description": "Movement In Chat",
 	"authors": [
-		"Me!"
+		"Ynotnaexists"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -16,11 +16,11 @@
 	"environment": "*",
 	"entrypoints": {
 		"client": [
-			"ynotnaexists.mic.MIC"
+			"ynotnaexists.moveandchat.MoveAndChat"
 		]
 	},
 	"mixins": [
-		"mic.mixins.json"
+		"moveandchat.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.14",

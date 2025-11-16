@@ -1,4 +1,4 @@
-package ynotnaexists.mic.mixin;
+package ynotnaexists.moveandchat.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ynotnaexists.mic.MIC;
+import ynotnaexists.moveandchat.MoveAndChat;
 
 @Environment(EnvType.CLIENT)
 @Mixin(TextFieldWidget.class)
@@ -25,7 +25,7 @@ public abstract class TextFieldMixin {
             at = @At("HEAD"),
             cancellable = true
     ) public void onMoveCursor(int offset, boolean shiftKeyPressed, CallbackInfo ci) {
-        if (MIC.enabled()) {
+        if (MoveAndChat.enabled()) {
             this.setCursor(this.getCursorPosWithOffset(offset), false);
             ci.cancel();
         }
