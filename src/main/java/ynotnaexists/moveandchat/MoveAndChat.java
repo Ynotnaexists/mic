@@ -2,13 +2,13 @@ package ynotnaexists.moveandchat;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.option.KeyBinding;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ynotnaexists.moveandchat.mixin.accessors.ChatScreenGetInputSuggestor;
+import ynotnaexists.moveandchat.mixin.accessors.GetCommandSuggestions;
 
 public class MoveAndChat implements ClientModInitializer {
     public static final String MOD_ID = "moveandchat";
@@ -18,12 +18,12 @@ public class MoveAndChat implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        KeyBindingHelper.registerKeyBinding(commandMovementKey);
+        KeyMappingHelper.registerKeyMapping(commandMovementKey);
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if (client.player != null && client.player.isDead()) setEnabled(false);
-            if (!MoveAndChat.enabled() || !(client.currentScreen instanceof ChatScreen)) return;
-            KeyBinding.updatePressedStates();
-            ((ChatScreenGetInputSuggestor) client.currentScreen).getChatInputSuggestor().refresh();
+            if (client.player != null && client.player.isDeadOrDying()) setEnabled(false);
+            if (!MoveAndChat.enabled() || !(client.screen instanceof ChatScreen)) return;
+            KeyMapping.resetToggleKeys();
+            ((GetCommandSuggestions) client.screen).getCommandSuggestions();
         });
     }
 
@@ -35,9 +35,9 @@ public class MoveAndChat implements ClientModInitializer {
         return commandMovementEnabled;
     }
 
-    public static final KeyBinding commandMovementKey = new KeyBinding(
+    public static final KeyMapping commandMovementKey = new KeyMapping(
         "key.walkingincommand.toggle_command_movement",
         GLFW.GLFW_KEY_LEFT_CONTROL,
-        KeyBinding.Category.MOVEMENT
+        KeyMapping.Category.MOVEMENT
     );
 }

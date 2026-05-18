@@ -3,9 +3,9 @@ package ynotnaexists.moveandchat.mixin;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ChatInputSuggestor;
-import net.minecraft.client.gui.screen.ChatScreen;
-import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.screens.ChatInputSuggestor;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.components.MultilineTextField;
 import net.minecraft.client.input.KeyInput;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,7 +20,7 @@ import ynotnaexists.moveandchat.mixin.accessors.ScreenGetMinecraftClient;
 @Environment(EnvType.CLIENT)
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin {
-    @Shadow protected TextFieldWidget chatField;
+    @Shadow protected MultilineTextField chatField;
     @Shadow ChatInputSuggestor chatInputSuggestor;
     @Shadow public abstract void sendMessage(String chatText, boolean addToHistory);
     @Shadow public abstract void close();

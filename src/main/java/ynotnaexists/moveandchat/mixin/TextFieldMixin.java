@@ -2,7 +2,7 @@ package ynotnaexists.moveandchat.mixin;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.components.MultilineTextField;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import ynotnaexists.moveandchat.MoveAndChat;
 
 @Environment(EnvType.CLIENT)
-@Mixin(TextFieldWidget.class)
+@Mixin(MultilineTextField.class)
 public abstract class TextFieldMixin {
 
     @Shadow public abstract void setCursor(int cursor, boolean shiftKeyPressed);
