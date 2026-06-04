@@ -20,8 +20,7 @@ public class MoveAndChat implements ClientModInitializer {
         KeyMappingHelper.registerKeyMapping(commandMovementKey);
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
             if (client.player != null && client.player.isDeadOrDying()) commandMovementEnabled = false;
-            if (commandMovementEnabled || !(client.screen instanceof ChatScreen)) return;
-            KeyMapping.resetToggleKeys();
+            if (commandMovementEnabled || client.screen instanceof ChatScreen) KeyMapping.setAll();
         });
     }
 

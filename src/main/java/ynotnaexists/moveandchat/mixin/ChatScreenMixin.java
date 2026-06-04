@@ -36,12 +36,12 @@ public abstract class ChatScreenMixin {
     private void movementToggle(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
         Minecraft client = ((ScreenGetMinecraftClient) this).getMinecraftClient();
         CommandSuggestions.SuggestionsList list = ((GetCommandSuggestionsSuggestionList) this.commandSuggestions).getSuggestionsList();
-        int keyCode = event.hashCode();
+        int keyCode = event.input();
 
-        MoveAndChat.LOGGER.info("Key press detected");
+        MoveAndChat.LOGGER.debug("Key press detected");
 
-        if (keyCode == ((KeyBindingGetBoundKey) MoveAndChat.commandMovementKey).getBoundKey().hashCode()) {
-            MoveAndChat.LOGGER.info("Key press is command movement key");
+        if (MoveAndChat.commandMovementKey.matches(event)) {
+            MoveAndChat.LOGGER.debug("Key press is command movement key");
             if (commandMovementEnabled) {
                 commandMovementEnabled = false;
                 client.mouseHandler.releaseMouse();
