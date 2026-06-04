@@ -8,31 +8,21 @@ import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ynotnaexists.moveandchat.mixin.accessors.GetCommandSuggestions;
+
+import static ynotnaexists.moveandchat.ModState.commandMovementEnabled;
 
 public class MoveAndChat implements ClientModInitializer {
     public static final String MOD_ID = "moveandchat";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-    private static boolean commandMovementEnabled;
-
     @Override
     public void onInitializeClient() {
         KeyMappingHelper.registerKeyMapping(commandMovementKey);
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if (client.player != null && client.player.isDeadOrDying()) setEnabled(false);
-            if (!MoveAndChat.enabled() || !(client.screen instanceof ChatScreen)) return;
+            if (client.player != null && client.player.isDeadOrDying()) commandMovementEnabled = false;
+            if (commandMovementEnabled || !(client.screen instanceof ChatScreen)) return;
             KeyMapping.resetToggleKeys();
-            ((GetCommandSuggestions) client.screen).getCommandSuggestions();
         });
-    }
-
-    public static void setEnabled(boolean enabled) {
-        commandMovementEnabled = enabled;
-    }
-
-    public static boolean enabled() {
-        return commandMovementEnabled;
     }
 
     public static final KeyMapping commandMovementKey = new KeyMapping(

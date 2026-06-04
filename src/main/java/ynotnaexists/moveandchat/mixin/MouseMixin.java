@@ -1,41 +1,42 @@
 package ynotnaexists.moveandchat.mixin;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.MouseHandler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import ynotnaexists.moveandchat.MoveAndChat;
+
+import static ynotnaexists.moveandchat.ModState.commandMovementEnabled;
 
 @Environment(EnvType.CLIENT)
-@Mixin(Mouse.class)
+@Mixin(MouseHandler.class)
 public class MouseMixin {
-    @Shadow private boolean cursorLocked;
-    @Shadow private double x;
-    @Shadow private double y;
-    @Shadow @Final private MinecraftClient client;
+    @Shadow private boolean mouseGrabbed;
+    @Shadow private double xpos;
+    @Shadow private double ypos;
+    @Shadow @Final private Minecraft minecraft;
 
     /**
      * This intercepts the lockCursor method to prevent it from
      * closing the ChatScreen, which would create a NullPointerException
      */
     @Inject(
-        method = "lockCursor",
+        method = "grabMouse",
         at = @At("HEAD"),
         cancellable = true
     )
     private void addWalkingInCommandSupport(CallbackInfo ci) {
-        if (MoveAndChat.enabled()) {
-            this.cursorLocked = true;
-            this.x = (double) this.client.getWindow().getWidth() / 2;
-            this.y = (double) this.client.getWindow().getHeight() / 2;
-            InputUtil.setCursorParameters(this.client.getWindow(), InputUtil.GLFW_CURSOR_DISABLED, this.x, this.y);
+        if (commandMovementEnabled) {
+            this.mouseGrabbed = true;
+            this.xpos = (double) this.minecraft.getWindow().getWidth() / 2;
+            this.ypos = (double) this.minecraft.getWindow().getHeight() / 2;
+            InputConstants.grabOrReleaseMouse(this.minecraft.getWindow(), InputConstants.CURSOR_DISABLED, this.xpos, this.ypos);
             ci.cancel();
         }
     }
