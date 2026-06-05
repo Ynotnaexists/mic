@@ -8,6 +8,7 @@ import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ynotnaexists.moveandchat.mixin.accessors.GetCommandSuggestions;
 
 import static ynotnaexists.moveandchat.ModState.commandMovementEnabled;
 
@@ -19,8 +20,11 @@ public class MoveAndChat implements ClientModInitializer {
     public void onInitializeClient() {
         KeyMappingHelper.registerKeyMapping(commandMovementKey);
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if (client.player != null && client.player.isDeadOrDying()) commandMovementEnabled = false;
-            if (commandMovementEnabled || client.screen instanceof ChatScreen) KeyMapping.setAll();
+            if (client.player == null || client.player.isDeadOrDying() || !(client.screen instanceof ChatScreen)) commandMovementEnabled = false;
+            if (commandMovementEnabled) {
+                KeyMapping.setAll();
+                ((GetCommandSuggestions) client.screen).getCommandSuggestions().updateCommandInfo();
+            }
         });
     }
 

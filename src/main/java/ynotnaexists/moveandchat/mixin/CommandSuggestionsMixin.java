@@ -42,14 +42,22 @@ public abstract class CommandSuggestionsMixin {
 
     @Inject(method = "sortSuggestions", at = @At("HEAD"), cancellable = true)
     public void analyzeSuggestionType(Suggestions suggestions, CallbackInfoReturnable<List<Suggestion>> cir) {
-        if (this.currentParse == null || !commandMovementEnabled || Minecraft.getInstance().level == null) return;
         List<ParsedCommandNode<ClientSuggestionProvider>> nodes = this.currentParse.getContext().getNodes();
-        if (nodes.isEmpty()) return;
+        MoveAndChat.LOGGER.debug(String.format("""
+            Parse: %s
+            Enabled: %s
+            Level: %s
+            Nodes: %s
+            """, this.currentParse, commandMovementEnabled, Minecraft.getInstance().level, nodes
+        ));
 
+        if (this.currentParse == null ||
+            !commandMovementEnabled ||
+            Minecraft.getInstance().level == null ||
+            nodes.isEmpty()) return;
         List<Suggestion> modifiedSuggestions = new ArrayList<>(suggestions.getList());
 
         // Get all nodes (parsed and being suggested)
-
         // Check for future nodes to change suggestions of
         CommandNode<ClientSuggestionProvider> child = nodes.getLast()
                 .getNode()
@@ -62,10 +70,10 @@ public abstract class CommandSuggestionsMixin {
 
         ArgumentCommandNode<?, ?> argNode = (ArgumentCommandNode<?, ?>) child;
         var argumentType = argNode.getType();
-        MoveAndChat.LOGGER.debug("Next argument type: {}", argumentType.getClass().getName());
+        MoveAndChat.LOGGER.info("Next argument type: {}", argumentType.getClass().getName());
 
         if (argumentType instanceof BlockPosArgument) {
-            MoveAndChat.LOGGER.debug("Detected BlockPos suggestions");
+            MoveAndChat.LOGGER.info("Detected BlockPos suggestions");
             if (modifiedSuggestions.size() <= 3) cir.cancel();
             Collections.swap(modifiedSuggestions, 0, 2);
 
@@ -85,6 +93,7 @@ public abstract class CommandSuggestionsMixin {
                     .findFirst()
                     .orElse(null);
 
+            // Bring to the front of the list
             if (uuidSuggestion != null) {
                 modifiedSuggestions.remove(uuidSuggestion);
                 modifiedSuggestions.addFirst(uuidSuggestion);
