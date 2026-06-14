@@ -70,10 +70,10 @@ public abstract class CommandSuggestionsMixin {
 
         ArgumentCommandNode<?, ?> argNode = (ArgumentCommandNode<?, ?>) child;
         var argumentType = argNode.getType();
-        MoveAndChat.LOGGER.info("Next argument type: {}", argumentType.getClass().getName());
+        MoveAndChat.LOGGER.debug("Next argument type: {}", argumentType.getClass().getName());
 
         if (argumentType instanceof BlockPosArgument) {
-            MoveAndChat.LOGGER.info("Detected BlockPos suggestions");
+            MoveAndChat.LOGGER.debug("Detected BlockPos suggestions");
             if (modifiedSuggestions.size() <= 3) cir.cancel();
             Collections.swap(modifiedSuggestions, 0, 2);
 
