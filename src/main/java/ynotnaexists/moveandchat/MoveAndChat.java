@@ -20,10 +20,10 @@ public class MoveAndChat implements ClientModInitializer {
     public void onInitializeClient() {
         KeyMappingHelper.registerKeyMapping(commandMovementKey);
         ClientTickEvents.START_CLIENT_TICK.register(client -> {
-            if (client.player == null || client.player.isDeadOrDying() || !(client.screen instanceof ChatScreen)) commandMovementEnabled = false;
+            if (client.player == null || client.player.isDeadOrDying() || !(client.gui.screen() instanceof ChatScreen)) commandMovementEnabled = false;
             if (commandMovementEnabled) {
                 KeyMapping.setAll();
-                ((GetCommandSuggestions) client.screen).getCommandSuggestions().updateCommandInfo();
+                ((GetCommandSuggestions) client.gui.screen()).getCommandSuggestions().updateCommandInfo();
             }
         });
     }
